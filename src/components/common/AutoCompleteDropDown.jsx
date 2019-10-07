@@ -3,7 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LOADER from '../../assets/loader.svg';
-//import ProviderList from '../ProviderList';
+import ProviderList from '../ProviderList';
+import ApiService from '../../utils/apiService';
 
 class AutoCompleteDropDown extends React.Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class AutoCompleteDropDown extends React.Component {
     this.state = {
       isLoading: false,
       showResults: false,
+      keyword: '',
       results: []
     };
   }
@@ -18,6 +20,12 @@ class AutoCompleteDropDown extends React.Component {
   toggleResultsDropdown = (showResults) => {
     this.setState({
       showResults
+    });
+  }
+
+  setLoading = (isLoading) => {
+    this.setState({
+      isLoading
     });
   }
 
@@ -30,6 +38,12 @@ class AutoCompleteDropDown extends React.Component {
     // The dropdown should only show while the user is typing,
     // and should also cater for situations where no result is available.
     // NOTE: This component should be as reusable as possible.
+    ApiService.get(ApiService.ENDPOINTS.providers, event.target.value)
+      .then((data) => {
+        this.setState({
+          results: data.data
+        });
+      });
   }
 
   onResultSelected = (selectedResult) => {
@@ -40,6 +54,7 @@ class AutoCompleteDropDown extends React.Component {
   }
 
   render() {
+    const { results } =this.state;
     const { isLoading } = this.state;
     const { placeholder } = this.props;
     return (
@@ -48,10 +63,11 @@ class AutoCompleteDropDown extends React.Component {
           type="text"
           className="input__style_1 input__search"
           placeholder={placeholder || "Find a Provider"}
+          onChange={this.getResults}
         />
         {isLoading && <img src={LOADER} className="loader" alt="loading" />}
 
-        {/* <ProviderList providers={results} onResultSelected={this.onResultSelected} /> */}
+        <ProviderList providers={results} onResultSelected={this.onResultSelected} />
       </div>
     );
   }

@@ -4,17 +4,23 @@ import ProviderGrid from '../components/ProviderGrid';
 import NewProvider from '../components/NewProvider';
 import ApiService from '../utils/apiService';
 import LoadingScreen from '../components/common/LoadingScreen';
+import { jsonGet } from '../utils/utils';
 
 class ExplorePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
-      isLoading: false
+      isLoading: false,
+      keyword: ''
     };
   }
 
   componentDidMount() {
+    this.loadData();
+  }
+
+  loadData = () => {
     this.setLoading(true);
     ApiService.get(ApiService.ENDPOINTS.providers)
       .then((data) => {
@@ -39,10 +45,19 @@ class ExplorePage extends React.Component {
     // i.e jsonGet(json, 'location.address') to get the address
     //
     // ============== CODE GOES BELOW THIS LINE :) ==============
-    
+    const { value } = event.target;
+    const { data } = this.state;
+    if (!value) this.loadData();
+    const searchData = data.filter((provider) => {
+      if (jsonGet(provider, 'name').includes(value) || jsonGet(provider, 'location.address').includes(value) || jsonGet(provider, 'type').includes(value)) return provider;
+    });
+    console.log(searchData);
+    return this.setState({ data: searchData });
   }
 
   render() {
+    console.log(this.state)
+    const { history } = this.props;
     const { isLoading, data } = this.state;
     return (
       <div className="container">
@@ -66,6 +81,7 @@ class ExplorePage extends React.Component {
             ) : (
               <ProviderGrid
                 providers={data}
+                history={history}
               />
             )}
           </section>

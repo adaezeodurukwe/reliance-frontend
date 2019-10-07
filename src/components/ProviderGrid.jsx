@@ -2,27 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ProviderCard from './ProviderCard';
 
-const ProviderGrid = ({ providers }) => (
-  <div className="provider-grid">
-    {providers.length === 0 ? (
-      <div className="center" style={{ width: '100%' }}>
-        <p>No Providers Found.</p>
-      </div>
-    )
-      : providers.map(provider => (
-        <ProviderCard
-          key={provider.id}
-          imageUrl={provider.imageUrl}
-          address={provider.location.address}
-          name={provider.name}
-          rating={provider.rating}
-          providerType={provider.type}
-          cardType="bg"
-        />
-      ))
-    }
-  </div>
-);
+const ProviderGrid = ({ providers, history }) => {
+  const handleClick = (id) => {
+    history.push(`/provider/${id}`);
+  }
+  return (
+    <div className="provider-grid">
+      {providers.length === 0 ? (
+        <div className="center" style={{ width: '100%' }}>
+          <p>No Providers Found.</p>
+        </div>
+      )
+        : providers.map(provider => (
+          <ProviderCard
+            key={provider.id}
+            imageUrl={provider.imageUrl}
+            address={provider.location.address}
+            name={provider.name}
+            rating={provider.rating}
+            providerType={provider.type}
+            cardType="bg"
+            onClick={() => handleClick(provider.id)}
+          />
+        ))
+      }
+    </div>
+  );
+}
 
 ProviderGrid.propTypes = {
   providers: PropTypes.arrayOf(PropTypes.shape({

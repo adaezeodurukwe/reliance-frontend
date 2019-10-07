@@ -21,5 +21,14 @@ export const jsonGet = (json, query) => {
   // const address = jsonGet(a, 'user.location.address')
 
   // ============== CODE GOES BELOW THIS LINE :) ==============
-
+  let currentChain;
+  const queryArr = query.split('.');
+  for(let i = 0; i < queryArr.length; i++) {
+    if (!currentChain) {
+      currentChain = json[queryArr[i]] 
+    } else {
+      currentChain = currentChain[queryArr[i]]
+    }
+  }
+  return currentChain;
 };

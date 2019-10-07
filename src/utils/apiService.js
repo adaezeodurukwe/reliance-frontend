@@ -1,4 +1,3 @@
-import queryString from 'querystring';
 /**
  * @class ApiService
  * @description Contains methods for making asynchronous Http requests
@@ -23,8 +22,10 @@ class ApiService {
    */
 
   static async get(url, data) {
+    // const finalUrl = data ? url : `${url}?q=${data}`
+    if (data) console.log(true)
     const response = await fetch(
-      `${url}${data ? `?${queryString.stringify(data)}` : ''}`
+      `${url}${data ? `?q=${data}` : ''}`
     );
     return response.json();
   }
@@ -41,7 +42,10 @@ class ApiService {
   static async post(url, data) {
     const response = await fetch(
       url, {
-        method: 'POST',
+        method: 'post',
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
         body: data
       }
     );

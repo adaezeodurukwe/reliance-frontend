@@ -7,9 +7,10 @@ const ProviderCard = ({
   address,
   rating,
   providerType,
-  cardType
+  cardType,
+  onClick
 }) => (
-  <div className={`card provider-card ${cardType} `}>
+  <div className={`card provider-card ${cardType} `} onClick={onClick}>
     {/* <div className="btn btn-sm like">
       <i className="fa fa-favorite" />
     </div> */}
