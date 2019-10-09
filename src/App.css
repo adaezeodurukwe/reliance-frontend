@@ -160,6 +160,10 @@ code {
         .dropdown.active .dropdown-menu ul li:hover, .active.select .dropdown-menu ul li:hover {
           background: #eee; }
 
+.autocomplete-dropdown .provider-list {
+  height: 150px;
+  overflow-y: scroll; }
+
 .autocomplete-dropdown .loader {
   position: absolute;
   right: 0;

@@ -27,9 +27,9 @@ class NewProviderForm extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const data = this.state;
-    ApiService.post(ApiService.ENDPOINTS.providers, data)
+    ApiService.post(ApiService.ENDPOINTS.providers, { ...data })
       .then((data) => {
-        console.log(data);
+        alert('provider added successfully');
       });
   }
 

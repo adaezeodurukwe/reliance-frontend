@@ -13,7 +13,8 @@ class AutoCompleteDropDown extends React.Component {
       isLoading: false,
       showResults: false,
       keyword: '',
-      results: []
+      results: [],
+      searchTerm: ''
     };
   }
 
@@ -38,12 +39,16 @@ class AutoCompleteDropDown extends React.Component {
     // The dropdown should only show while the user is typing,
     // and should also cater for situations where no result is available.
     // NOTE: This component should be as reusable as possible.
-    ApiService.get(ApiService.ENDPOINTS.providers, event.target.value)
+    const { value } = event.target;
+    const { searchTerm } = this.state;
+    this.setState({ searchTerm: value }, () => {
+      ApiService.get(ApiService.ENDPOINTS.providers, searchTerm)
       .then((data) => {
         this.setState({
           results: data.data
         });
       });
+    })
   }
 
   onResultSelected = (selectedResult) => {
@@ -55,7 +60,7 @@ class AutoCompleteDropDown extends React.Component {
 
   render() {
     const { results } =this.state;
-    const { isLoading } = this.state;
+    const { isLoading, searchTerm } = this.state;
     const { placeholder } = this.props;
     return (
       <div className="dropdown active autocomplete-dropdown">
@@ -67,7 +72,7 @@ class AutoCompleteDropDown extends React.Component {
         />
         {isLoading && <img src={LOADER} className="loader" alt="loading" />}
 
-        <ProviderList providers={results} onResultSelected={this.onResultSelected} />
+        {searchTerm && <ProviderList providers={results} onResultSelected={this.onResultSelected} />}
       </div>
     );
   }

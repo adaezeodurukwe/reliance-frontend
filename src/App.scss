@@ -240,6 +240,10 @@ code {
 }
 
 .autocomplete-dropdown {
+  .provider-list {
+    height: 150px;
+    overflow-y: scroll;
+  }
 
   .loader {
     position: absolute;

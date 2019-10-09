@@ -44,9 +44,17 @@ class ApiService {
       url, {
         method: 'post',
         headers: {
-          'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+          'Accept': 'application/json, text/plain, */*',
+          'content-type': 'application/json'
         },
-        body: data
+        body: JSON.stringify({
+          name: data.name,
+          state: data.state,
+          address: data.address,
+          type: data.type,
+          imageUrl: data.imageUrl,
+          rating: data.rating
+        })
       }
     );
     return response.json();

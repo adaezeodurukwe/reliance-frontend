@@ -11,6 +11,7 @@ class ExplorePage extends React.Component {
     super(props);
     this.state = {
       data: [],
+      fullData: [],
       isLoading: false,
       keyword: ''
     };
@@ -26,7 +27,8 @@ class ExplorePage extends React.Component {
       .then((data) => {
         this.setState({
           isLoading: false,
-          data: data.data
+          data: data.data,
+          fullData: data.data
         });
       });
   }
@@ -46,17 +48,15 @@ class ExplorePage extends React.Component {
     //
     // ============== CODE GOES BELOW THIS LINE :) ==============
     const { value } = event.target;
-    const { data } = this.state;
+    const { fullData } = this.state;
     if (!value) this.loadData();
-    const searchData = data.filter((provider) => {
+    const searchData = fullData.filter((provider) => {
       if (jsonGet(provider, 'name').includes(value) || jsonGet(provider, 'location.address').includes(value) || jsonGet(provider, 'type').includes(value)) return provider;
     });
-    console.log(searchData);
     return this.setState({ data: searchData });
   }
 
   render() {
-    console.log(this.state)
     const { history } = this.props;
     const { isLoading, data } = this.state;
     return (

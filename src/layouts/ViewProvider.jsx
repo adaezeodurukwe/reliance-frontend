@@ -12,7 +12,6 @@ class ViewProvider extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     const { id } = this.props.match.params;
     const url = ApiService.ENDPOINTS.providers
     ApiService.get(`${url}/${id}`)
